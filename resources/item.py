@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
+
 from models.item import ItemModel
 
 
@@ -32,6 +33,7 @@ class Item(Resource):
 
         return item.json(), 201
 
+    @jwt_required()
     def delete(self, name):
         item = ItemModel.find_by_name(name)
         if item is None:
@@ -39,6 +41,7 @@ class Item(Resource):
         item.delete_from_db()
         return {"msg": "Deleted"}
 
+    @jwt_required()
     def put(self, name):
         # if self.find_by_name(name) is No.
         data = Item.parser.parse_args()
@@ -48,7 +51,7 @@ class Item(Resource):
         if item is None:
             item = ItemModel(name, **data)
         else:
-            item.price = data['price']
+            item.price = data["price"]
         item.save_to_db()
         return item.json()
 
