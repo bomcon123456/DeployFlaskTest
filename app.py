@@ -16,6 +16,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
 )
 app.secret_key = 'TopSecretKey'
 
+
+@app.before_first_request
+def create_tables():
+    db.create_all()  # create the data.db unless it's already existed
+
+
 api = Api(app)
 jwt = JWT(app, authenticate, identity)
 
@@ -26,7 +32,11 @@ api.add_resource(Store, '/store/<string:name>')
 api.add_resource(StoreList, '/stores')
 
 if __name__ == '__main__':
+    from dotenv import load_dotenv
+
     from db import db
 
+    load_dotenv()
     db.init_app(app)
+
     app.run(port=5000, debug=True)

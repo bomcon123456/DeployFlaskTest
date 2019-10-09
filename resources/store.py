@@ -15,7 +15,7 @@ class Store(Resource):
     def post(self, name):
         if StoreModel.find_by_name(name):
             return {'message': 'Store has already existed'}, 400
-        store = StoreModel(name)
+        store = StoreModel(name=name)
         try:
             store.save_to_db()
         except:
@@ -28,7 +28,7 @@ class Store(Resource):
         store = StoreModel.find_by_name(name)
         if store:
             store.delete_from_db()
-            return {'message': 'Store has been deleted'}
+            return {'message': 'Store has been deleted'}, 204
         else:
             return {'message': 'Store is not found'}, 404
 

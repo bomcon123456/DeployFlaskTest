@@ -27,7 +27,7 @@ class Item(Resource):
 
         data = Item.parser.parse_args()
 
-        item = ItemModel(name, **data)
+        item = ItemModel(name=name, **data)
         item.save_to_db()
 
         return item.json(), 201
@@ -38,7 +38,7 @@ class Item(Resource):
         if item is None:
             return {'message': 'This item is not existed.'}, 404
         item.delete_from_db()
-        return {'message': 'Item has been deleted'}
+        return {'message': 'Item has been deleted'}, 204
 
     @jwt_required()
     def put(self, name):

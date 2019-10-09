@@ -1,9 +1,11 @@
+import bcrypt
+
 from models.user import UserModel
 
 
 def authenticate(username, password):
     user = UserModel.find_by_username(username)
-    if user and user.password == password:
+    if user and bcrypt.checkpw(password.encode('utf-8'), user.password):
         return user
 
 
