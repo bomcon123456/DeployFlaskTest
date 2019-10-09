@@ -1,13 +1,17 @@
 import os
 
+from dotenv import load_dotenv  # Uncomment if deploy to heroku
 from flask import Flask
-from flask_restful import Api
 from flask_jwt import JWT
+from flask_restful import Api
 
 from security import identity, authenticate
-from resources.user import UserRegister
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
+from resources.user import UserRegister
+
+# Uncomment if deploy to heroku
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -32,11 +36,8 @@ api.add_resource(Store, '/store/<string:name>')
 api.add_resource(StoreList, '/stores')
 
 if __name__ == '__main__':
-    from dotenv import load_dotenv
-
     from db import db
 
-    load_dotenv()
     db.init_app(app)
 
     app.run(port=5000, debug=True)
