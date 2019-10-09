@@ -7,24 +7,23 @@ from models.item import ItemModel
 class Item(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        "price", type=float, required=True, help="This field is required."
+        'price', type=float, required=True, help='This field is required.'
     )
     parser.add_argument(
-        "store_id", type=float, required=True, help="This field is required."
+        'store_id', type=float, required=True, help='This field is required.'
     )
 
-    @jwt_required()
     def get(self, name):
         item = ItemModel.find_by_name(name)
 
         if item:
             return item.json()
-        return {"message": "Item not found"}, 404
+        return {'message': 'Item is not found.'}, 404
 
     @jwt_required()
     def post(self, name):
         if ItemModel.find_by_name(name):
-            return {"msg": "Exist."}, 400
+            return {'message': 'Item has already existed.'}, 400
 
         data = Item.parser.parse_args()
 
@@ -37,13 +36,12 @@ class Item(Resource):
     def delete(self, name):
         item = ItemModel.find_by_name(name)
         if item is None:
-            return {"msg": "Doesnt exists."}, 404
+            return {'message': 'This item is not existed.'}, 404
         item.delete_from_db()
-        return {"msg": "Deleted"}
+        return {'message': 'Item has been deleted'}
 
     @jwt_required()
     def put(self, name):
-        # if self.find_by_name(name) is No.
         data = Item.parser.parse_args()
 
         item = ItemModel.find_by_name(name)
@@ -51,11 +49,11 @@ class Item(Resource):
         if item is None:
             item = ItemModel(name, **data)
         else:
-            item.price = data["price"]
+            item.price = data['price']
         item.save_to_db()
         return item.json()
 
 
 class ItemList(Resource):
     def get(self):
-        return {"items": [item.json() for item in ItemModel.query.all()]}
+        return {'items': [item.json() for item in ItemModel.query.all()]}
