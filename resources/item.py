@@ -1,5 +1,5 @@
-from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
+from flask_restful import Resource, reqparse
 
 from models.item import ItemModel
 
@@ -7,10 +7,10 @@ from models.item import ItemModel
 class Item(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        'price', type=float, required=True, help='This field is required.'
+        'price', type=float, required=True
     )
     parser.add_argument(
-        'store_id', type=float, required=True, help='This field is required.'
+        'store_id', type=float, required=True
     )
 
     def get(self, name):
@@ -36,9 +36,9 @@ class Item(Resource):
     def delete(self, name):
         item = ItemModel.find_by_name(name)
         if item is None:
-            return {'message': 'This item is not existed.'}, 404
+            return {'message': 'This item is not existed.'}, 202
         item.delete_from_db()
-        return {'message': 'Item has been deleted'}, 204
+        return {'message': 'Item has been deleted'}
 
     @jwt_required()
     def put(self, name):

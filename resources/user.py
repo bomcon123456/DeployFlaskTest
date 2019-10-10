@@ -7,10 +7,10 @@ from models.user import UserModel
 class UserRegister(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        'username', type=str, required=True, help='This field is required.'
+        'username', type=str, required=True
     )
     parser.add_argument(
-        'password', type=str, required=True, help='This field is required.'
+        'password', type=str, required=True
     )
 
     def post(self):
