@@ -1,9 +1,10 @@
 import bcrypt
 
 from db import db
+from common.modelmixin import ModelMixin
 
 
-class UserModel(db.Model):
+class UserModel(db.Model, ModelMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -14,10 +15,6 @@ class UserModel(db.Model):
         super().__init__(**kwargs)
         self.hashed_password = bcrypt.hashpw(
             kwargs['hashed_password'].encode('utf-8'), bcrypt.gensalt())
-
-    def save_to_db(self):
-        db.session.add(self)
-        db.session.commit()
 
     @classmethod
     def find_by_username(cls, username):
