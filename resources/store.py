@@ -16,10 +16,7 @@ class Store(Resource):
         if StoreModel.find_by_name(name):
             return {'message': 'Store has already existed.'}, 400
         store = StoreModel(name=name)
-        try:
-            store.save_to_db()
-        except:
-            return {'message': 'Failed to create store.'}, 500
+        store.save_to_db()
 
         return store.json(), 201
 
@@ -40,8 +37,13 @@ class StoreList(Resource):
 
     def get(self):
         data = StoreList.parser.parse_args()
+        paginator = StoreModel.query.paginate(
+            data['page'], data['size'], False).items
 
-        # paginate(page,size,flag), flag == False return [] if empty
-        res = [store.json() for store in StoreModel.query.paginate(
-            data['page'], data['size'], False).items]
-        return {'stores': res}
+        res = [store.json() for store in paginator.items]
+        return {
+            'stores': res,
+            'currentPage': paginator.page,
+            'perPage': paginator.per_page,
+            'total': paginator.total
+        }

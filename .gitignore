@@ -6,4 +6,4 @@ venv/
 .env
 *.swp
 *.swo
-
+.vscode/

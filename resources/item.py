@@ -61,8 +61,13 @@ class ItemList(Resource):
 
     def get(self):
         data = ItemList.parser.parse_args()
+        paginator = ItemModel.query.paginate(
+            data['page'], data['size'], False)
 
-        # paginate(page,size,flag), flag == False return [] if empty
-        res = [item.json() for item in ItemModel.query.paginate(
-            data['page'], data['size'], False).items]
-        return {'items': res}
+        res = [item.json() for item in paginator.items]
+        return {
+            'items': res,
+            'currentPage': paginator.page,
+            'perPage': paginator.per_page,
+            'total': paginator.total
+        }
