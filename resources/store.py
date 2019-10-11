@@ -1,4 +1,4 @@
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
 
 from models.store import StoreModel
@@ -34,5 +34,14 @@ class Store(Resource):
 
 
 class StoreList(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('page', type=int, location='args', default=1)
+    parser.add_argument('size', type=int, location='args', default=5)
+
     def get(self):
-        return {'stores': [store.json() for store in StoreModel.query.all()]}
+        data = StoreList.parser.parse_args()
+
+        # paginate(page,size,flag), flag == False return [] if empty
+        res = [store.json() for store in StoreModel.query.paginate(
+            data['page'], data['size'], False).items]
+        return {'stores': res}

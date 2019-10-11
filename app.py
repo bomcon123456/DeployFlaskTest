@@ -27,6 +27,11 @@ def create_tables():
 
 
 api = Api(app, errors={
+    'JWTError': {
+        'status': 401,
+        'message': 'Session is over. Please sign in again',
+        'err_code': 'token_expired'
+    },
     'Exception': {
         'status': 500,
         'message': 'Sorry, something bad has happened.',

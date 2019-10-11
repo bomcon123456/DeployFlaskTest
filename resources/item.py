@@ -55,5 +55,14 @@ class Item(Resource):
 
 
 class ItemList(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('page', type=int, location='args', default=1)
+    parser.add_argument('size', type=int, location='args', default=5)
+
     def get(self):
-        return {'items': [item.json() for item in ItemModel.query.all()]}
+        data = ItemList.parser.parse_args()
+
+        # paginate(page,size,flag), flag == False return [] if empty
+        res = [item.json() for item in ItemModel.query.paginate(
+            data['page'], data['size'], False).items]
+        return {'items': res}
