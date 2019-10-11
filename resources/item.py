@@ -36,7 +36,7 @@ class Item(Resource):
     def delete(self, name):
         item = ItemModel.find_by_name(name)
         if item is None:
-            return {'message': 'This item is not existed.'}, 202
+            return {'message': 'Item is not found.'}, 404
         item.delete_from_db()
         return {'message': 'Item has been deleted'}
 
