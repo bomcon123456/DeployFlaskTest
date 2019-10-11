@@ -14,7 +14,7 @@ class Store(Resource):
     @jwt_required()
     def post(self, name):
         if StoreModel.find_by_name(name):
-            return {'message': 'Store has already existed'}, 400
+            return {'message': 'Store has already existed.'}, 400
         store = StoreModel(name=name)
         try:
             store.save_to_db()
@@ -28,9 +28,9 @@ class Store(Resource):
         store = StoreModel.find_by_name(name)
         if store:
             store.delete_from_db()
-            return {'message': 'Store has been deleted'}
+            return {'message': 'Store has been deleted.'}
         else:
-            return {'message': 'Store is not found'}, 404
+            return {'message': 'Store is not found.'}, 404
 
 
 class StoreList(Resource):

@@ -5,10 +5,10 @@ from flask import Flask
 from flask_jwt import JWT
 from flask_restful import Api
 
-from security import identity, authenticate
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 from resources.user import UserRegister
+from security import identity, authenticate
 
 # Uncomment if deploy to heroku
 load_dotenv()
