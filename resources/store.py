@@ -38,7 +38,7 @@ class StoreList(Resource):
     def get(self):
         data = StoreList.parser.parse_args()
         paginator = StoreModel.query.paginate(
-            data['page'], data['size'], False).items
+            data['page'], data['size'], False)
 
         res = [store.json() for store in paginator.items]
         return {

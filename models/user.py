@@ -13,7 +13,7 @@ class UserModel(db.Model):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.hashed_password = bcrypt.hashpw(
-            kwargs['password'].encode('utf-8'), bcrypt.gensalt())
+            kwargs['hashed_password'].encode('utf-8'), bcrypt.gensalt())
 
     def save_to_db(self):
         db.session.add(self)

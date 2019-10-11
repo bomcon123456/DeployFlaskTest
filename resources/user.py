@@ -19,10 +19,8 @@ class UserRegister(Resource):
         if UserModel.find_by_username(data['username']):
             return {'message': 'User with that username has existed.'}, 400
 
-        password_hashed = bcrypt.hashpw(
-            data['password'].encode('utf-8'), bcrypt.gensalt())
-
-        user = UserModel(username=data['username'], password=password_hashed)
+        user = UserModel(username=data['username'],
+                         hashed_password=data['password'])
         user.save_to_db()
 
         return {'message': 'User created succesfully.'}, 201
