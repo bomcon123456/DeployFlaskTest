@@ -38,7 +38,7 @@ class Item(Resource):
         if item is None:
             return {'message': 'Item is not found.'}, 404
         item.delete_from_db()
-        return {'message': 'Item has been deleted.'}
+        return {'message': 'Item has been deleted.'}, 204
 
     @jwt_required()
     def put(self, name):
