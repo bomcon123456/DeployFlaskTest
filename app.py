@@ -10,7 +10,6 @@ from resources.store import Store, StoreList
 from resources.user import UserRegister
 from security import identity, authenticate
 
-# Uncomment if deploy to heroku
 load_dotenv()
 
 app = Flask(__name__)
